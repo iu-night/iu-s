@@ -1,12 +1,15 @@
 import { defineStore } from 'pinia'
+import type { ISearch } from '@/types'
 
 interface UserState {
   pic: string
+  search: keyof ISearch
 }
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
-    pic: 'pic2.webp',
+    pic: 'pic3.jpg',
+    search: 'google',
   }),
 
   getters: {
@@ -19,6 +22,9 @@ export const useUserStore = defineStore('user', {
   actions: {
     setPic(pic: string): void {
       this.pic = pic
+    },
+    setSearch(s: keyof ISearch): void {
+      this.search = s
     },
   },
 })

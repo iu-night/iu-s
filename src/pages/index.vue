@@ -7,6 +7,9 @@ let setVis = $ref(false)
 let formatter = $ref('HH:mm:ss')
 const time = useDateFormat(useNow(), formatter)
 
+const picArr = ['pic1.jpg', 'pic2.webp', 'pic3.jpg']
+const pic = computed(() => useStore.getPic)
+
 const setFormatter = (f: string) => {
   switch (f) {
     case 'year':
@@ -47,43 +50,51 @@ onMounted(() => {
           top-0 left-0 z-998
           w-full h-full
           transition-opacity-300
-          backdrop-blur-5px backdrop-saturate-50"
+          backdrop-blur-5px backdrop-saturate-80"
       >
         <div v-on-click-outside="closeModal" class="setting-main">
           <TheHeader />
-          <section mt-50px px-30px>
+          <!-- <section mt-50px px-30px>
             <h2 text-xl font-bold>
               时间
             </h2>
-            <!-- <div flex mt-10px justify="around">
+            <div flex mt-10px justify="around">
               <div>年</div>
               <div>月日</div>
               <div>秒</div>
-            </div> -->
-          </section>
+            </div>
+          </section> -->
           <section mt-50px px-30px>
             <h2 text-xl font-bold>
-              切换壁纸
+              壁纸
             </h2>
-            <div flex mt-10px justify="around">
-              <div cursor-pointer @click="setPic('pic1.jpg')">
-                pic1
-              </div>
-              <div cursor-pointer @click="setPic('pic2.webp')">
-                pic2
+            <div flex mt-10px h-100px justify-around items-center>
+              <div
+                v-for="(item, index) in picArr"
+                :key="item"
+                class="pic-view"
+                :class="{
+                  'pic-active': pic === item,
+                }"
+                @click="setPic(item)"
+              >
+                <div :class="`pic${index + 1}`" />
+                <div v-if="pic === item" class="pic-mask">
+                  <div i-carbon-checkmark-outline />
+                </div>
               </div>
             </div>
           </section>
-          <section mt-50px px-30px>
+          <!-- <section mt-50px px-30px>
             <h2 text-xl font-bold>
               默认搜索引擎
             </h2>
-            <!-- <div flex mt-10px justify="around">
+            <div flex mt-10px justify="around">
               <div>百度icon</div>
               <div>Google icon</div>
               <div>Github icon</div>
-            </div> -->
-          </section>
+            </div>
+          </section> -->
         </div>
       </div>
     </Transition>
@@ -94,13 +105,57 @@ onMounted(() => {
 <style lang="scss">
 .setting-main {
   --iu:
-    w-500px h-500px
+    w-500px h-270px
     flex flex-col relative
     rounded-4px
   text-gray-700 dark:text-gray-200
     bg-[#ddd] dark:bg-[#222]
     transition-300
     shadow-iu dark:shadow-iud;
+}
+
+.pic-view {
+  --iu:
+    h-80px w-120px rounded-6px
+    relative
+    overflow-hidden
+    cursor-pointer
+    transition-300;
+
+  &:hover {
+    --iu: scale-110;
+  }
+}
+
+.pic-active {
+  --iu: cursor-default;
+}
+
+.pic-mask {
+  --iu: bg-[#000]:30
+  absolute top-0 left-0
+  flex-center
+  z-10
+  h-full w-full
+  c-teal-600 text-30px;
+}
+
+.pic1 {
+  --iu: w-full h-full bg-cover bg-center;
+
+  background-image: url("../assets/pic1.jpg");
+}
+
+.pic2 {
+  --iu: w-full h-full bg-cover bg-center;
+
+  background-image: url("../assets/pic2.webp");
+}
+
+.pic3 {
+  --iu: w-full h-full bg-cover bg-center;
+
+  background-image: url("../assets/pic3.jpg");
 }
 
 .setting-enter-from,

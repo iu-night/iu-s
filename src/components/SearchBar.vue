@@ -1,18 +1,16 @@
 <script setup lang="ts">
-interface ISearch {
-  google: string
-  baidu: string
-  bing: string
-  github: string
-}
+import type { ISearch } from '@/types'
+
+const useStore = useUserStore()
+const setSea = useStore.setSearch
 
 let searchValue = $ref('')
 
-const search = ref<keyof ISearch>('google')
+const search = computed(() => useStore.search)
 const searchMap: ISearch = {
-  google: 'i-carbon-logo-google',
-  baidu: 'string',
-  bing: 'i-carbon-logo-bing',
+  google: 'i-custom:google',
+  baidu: 'i-custom:baidu',
+  bing: 'i-custom:bing',
   github: 'i-carbon-logo-github',
 }
 const searchUrl: ISearch = {
@@ -30,6 +28,8 @@ const logoClass = computed(() => {
   return searchMap[search.value]
 })
 
+const { ctrl_g, ctrl_d, ctrl_m, ctrl_h, enter } = useMagicKeys()
+
 const toSearch = () => {
   if (window)
     window.open(searchUrl[search.value] + searchValue, '_blank')
@@ -42,18 +42,32 @@ watch(activeKey, (key) => {
     iusClassName = ''
 })
 
-onMounted(() => {
-  useEventListener(document, 'keyup', (e) => {
-    if (e.key === 'Enter')
-      toSearch()
-  }, true)
+watch(enter, (v) => {
+  if (v)
+    toSearch()
+})
+watch(ctrl_g, (v) => {
+  if (v)
+    setSea('google')
+})
+watch(ctrl_d, (v) => {
+  if (v)
+    setSea('baidu')
+})
+watch(ctrl_m, (v) => {
+  if (v)
+    setSea('bing')
+})
+watch(ctrl_h, (v) => {
+  if (v)
+    setSea('github')
 })
 </script>
 
 <template>
   <div class="ius-search-bar" :class="iusClassName">
     <div :class="logoClass" class="cursor-pointer" />
-    <input v-model="searchValue" data-id="searchBar" type="text" class="ius-input">
+    <input v-model="searchValue" data-id="searchBar" type="text" class="ius-input" spellcheck="false" autocapitalize="off">
     <div icon-btn i-carbon-search @click="toSearch" />
   </div>
 </template>
