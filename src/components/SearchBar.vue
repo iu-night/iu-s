@@ -32,8 +32,10 @@ const logoClass = computed(() => {
 const { ctrl_g, ctrl_d, ctrl_m, ctrl_h, enter } = useMagicKeys()
 
 const toSearch = () => {
-  if (window)
+  if (window) {
     window.open(searchUrl[search.value] + searchValue, '_blank')
+    searchValue = ''
+  }
 }
 
 const toggleSearch = () => {
@@ -129,7 +131,7 @@ onMounted(() => {
   --iu:
     relative
     inline-flex items-center
-    w-300px h-45px
+    w-350px h-45px
     text-20px
     px-8px py-4px
     rounded-20px
@@ -153,6 +155,7 @@ onMounted(() => {
     mx-10px
     p-0
     b-0
+    text-18px
     bg-transparent
     placeholder-gray dark:placeholder-gray-500;
 

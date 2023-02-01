@@ -4,18 +4,15 @@ import { vOnClickOutside } from '@vueuse/components'
 const useStore = useUserStore()
 let setVis = $ref(false)
 
-let formatter = $ref('HH:mm:ss')
+// let formatter = $ref('HH:mm:ss')
+const formatter = computed(() => useStore.getTime)
 const time = useDateFormat(useNow(), formatter)
+
+const second = computed(() => useStore.second)
+const hour = computed(() => useStore.hour)
 
 const picArr = ['pic1.jpg', 'pic2.webp', 'pic3.jpg']
 const pic = computed(() => useStore.getPic)
-
-const setFormatter = (f: string) => {
-  switch (f) {
-    case 'year':
-      formatter = 'YYYY-MM-DD HH:mm:ss'
-  }
-}
 
 const setPic = (picName: string) => {
   useStore.setPic(picName)
@@ -54,17 +51,20 @@ onMounted(() => {
       >
         <div v-on-click-outside="closeModal" class="setting-main">
           <TheHeader />
-          <!-- <section mt-50px px-30px>
+          <section mt-50px px-30px flex items-center>
             <h2 text-xl font-bold>
               时间
             </h2>
-            <div flex mt-10px justify="around">
-              <div>年</div>
-              <div>月日</div>
-              <div>秒</div>
+            <div flex flex-1 justify-end>
+              <Checkbox :model-value="hour" @update:model-value="useStore.setHour">
+                24H
+              </Checkbox>
+              <Checkbox :model-value="second" @update:model-value="useStore.setSecond">
+                秒
+              </Checkbox>
             </div>
-          </section> -->
-          <section mt-50px px-30px>
+          </section>
+          <section mt-30px px-30px>
             <h2 text-xl font-bold>
               壁纸
             </h2>
@@ -105,7 +105,7 @@ onMounted(() => {
 <style lang="scss">
 .setting-main {
   --iu:
-    w-500px h-270px
+    w-500px h-320px
     flex flex-col relative
     rounded-4px
   text-gray-700 dark:text-gray-200
