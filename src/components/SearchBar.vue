@@ -29,7 +29,7 @@ const logoClass = computed(() => {
   return searchMap[search.value]
 })
 
-const { ctrl_g, ctrl_d, ctrl_m, ctrl_h, enter } = useMagicKeys()
+const { ctrl_g, ctrl_d, ctrl_m, ctrl_h, enter, arrowup, arrowdown } = useMagicKeys()
 
 const toSearch = () => {
   if (window) {
@@ -100,15 +100,26 @@ watch(ctrl_h, (v) => {
     setSea('github')
 })
 
+watch(arrowup, (v) => {
+  if (v)
+    toggleSearchReverse()
+})
+watch(arrowdown, (v) => {
+  if (v)
+    toggleSearch()
+})
+
+const handleWheelThrottled = useThrottleFn((e: WheelEvent) => {
+  if (logoHover) {
+    if (e.deltaY > 0)
+      toggleSearch()
+    else
+      toggleSearchReverse()
+  }
+}, 500)
+
 onMounted(() => {
-  useEventListener(window, 'wheel', (e) => {
-    if (logoHover) {
-      if (e.deltaY > 0)
-        toggleSearch()
-      else
-        toggleSearchReverse()
-    }
-  })
+  useEventListener(window, 'wheel', handleWheelThrottled)
 })
 </script>
 
