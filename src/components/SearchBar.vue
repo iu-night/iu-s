@@ -5,6 +5,7 @@ const useStore = useUserStore()
 const setSea = useStore.setSearch
 
 let searchValue = $ref('')
+let logoHover = $ref(false)
 
 const search = computed(() => useStore.search)
 const searchMap: ISearch = {
@@ -35,6 +36,40 @@ const toSearch = () => {
     window.open(searchUrl[search.value] + searchValue, '_blank')
 }
 
+const toggleSearch = () => {
+  if (search.value === 'google') {
+    setSea('baidu')
+    return
+  }
+  if (search.value === 'baidu') {
+    setSea('bing')
+    return
+  }
+  if (search.value === 'bing') {
+    setSea('github')
+    return
+  }
+  if (search.value === 'github')
+    setSea('google')
+}
+
+const toggleSearchReverse = () => {
+  if (search.value === 'google') {
+    setSea('github')
+    return
+  }
+  if (search.value === 'github') {
+    setSea('bing')
+    return
+  }
+  if (search.value === 'bing') {
+    setSea('baidu')
+    return
+  }
+  if (search.value === 'baidu')
+    setSea('google')
+}
+
 watch(activeKey, (key) => {
   if (key === 'searchBar')
     iusClassName = 'ius-search-bar-active'
@@ -62,11 +97,28 @@ watch(ctrl_h, (v) => {
   if (v)
     setSea('github')
 })
+
+onMounted(() => {
+  useEventListener(window, 'wheel', (e) => {
+    if (logoHover) {
+      if (e.deltaY > 0)
+        toggleSearch()
+      else
+        toggleSearchReverse()
+    }
+  })
+})
 </script>
 
 <template>
-  <div class="ius-search-bar" :class="iusClassName">
-    <div :class="logoClass" class="cursor-pointer" />
+  <div
+    class="ius-search-bar" :class="iusClassName"
+    @mouseover="logoHover = true"
+    @mouseleave="logoHover = false"
+  >
+    <div
+      :class="logoClass" class="cursor-pointer"
+    />
     <input v-model="searchValue" data-id="searchBar" type="text" class="ius-input" spellcheck="false" autocapitalize="off">
     <div icon-btn i-carbon-search @click="toSearch" />
   </div>
