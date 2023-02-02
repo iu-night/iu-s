@@ -11,7 +11,7 @@ interface UserState {
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
-    pic: 'pic3.jpg',
+    pic: 'pic3.webp',
     search: 'google',
     second: true,
     hour: true, // 24-hour

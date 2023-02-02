@@ -11,7 +11,7 @@ const time = useDateFormat(useNow(), formatter)
 const second = computed(() => useStore.second)
 const hour = computed(() => useStore.hour)
 
-const picArr = ['pic1.jpg', 'pic2.webp', 'pic3.jpg']
+const picArr = ['pic1.webp', 'pic2.webp', 'pic3.webp']
 const pic = computed(() => useStore.getPic)
 
 const setPic = (picName: string) => {
@@ -78,7 +78,7 @@ onMounted(() => {
                 }"
                 @click="setPic(item)"
               >
-                <div :class="`pic${index + 1}`" />
+                <div :class="`pic${index + 1}`" class="pic" />
                 <div v-if="pic === item" class="pic-mask">
                   <div i-carbon-checkmark-outline />
                 </div>
@@ -140,22 +140,20 @@ onMounted(() => {
   c-teal-600 text-30px;
 }
 
-.pic1 {
+.pic {
   --iu: w-full h-full bg-cover bg-center;
+}
 
-  background-image: url("../assets/pic1.jpg");
+.pic1 {
+  background-image: url("../assets/pic1.webp");
 }
 
 .pic2 {
-  --iu: w-full h-full bg-cover bg-center;
-
   background-image: url("../assets/pic2.webp");
 }
 
 .pic3 {
-  --iu: w-full h-full bg-cover bg-center;
-
-  background-image: url("../assets/pic3.jpg");
+  background-image: url("../assets/pic3.webp");
 }
 
 .setting-enter-from,
