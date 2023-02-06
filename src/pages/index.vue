@@ -34,7 +34,10 @@ onMounted(() => {
 
 <template>
   <main class="w-full h-full flex flex-col items-center">
-    <div mt-140px fixed text-4xl font-bold c-white transition-transform-300 hover:scale-110>
+    <div
+      class="mt-140px fixed text-4xl font-bold select-none c-white cursor-pointer transition-transform-300 hover:scale-110"
+      @click="toggleDark()"
+    >
       {{ time }}
     </div>
     <div mt-230px>

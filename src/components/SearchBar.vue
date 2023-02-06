@@ -29,7 +29,7 @@ const logoClass = computed(() => {
   return searchMap[search.value]
 })
 
-const { ctrl_g, ctrl_d, ctrl_m, ctrl_h, enter, arrowup, arrowdown } = useMagicKeys()
+const { ctrl_g, ctrl_d, ctrl_m, ctrl_h, arrowup, arrowdown } = useMagicKeys()
 
 const toSearch = () => {
   if (window) {
@@ -79,10 +79,6 @@ watch(activeKey, (key) => {
     iusClassName = ''
 })
 
-watch(enter, (v) => {
-  if (v)
-    toSearch()
-})
 watch(ctrl_g, (v) => {
   if (v)
     setSea('google')
@@ -132,7 +128,15 @@ onMounted(() => {
     <div
       :class="logoClass" class="cursor-pointer"
     />
-    <input v-model="searchValue" data-id="searchBar" type="text" class="ius-input" spellcheck="false" autocapitalize="off">
+    <input
+      v-model="searchValue"
+      data-id="searchBar"
+      type="text"
+      class="ius-input"
+      spellcheck="false"
+      autocapitalize="off"
+      @keyup.enter="toSearch"
+    >
     <div icon-btn i-carbon-search @click="toSearch" />
   </div>
 </template>
